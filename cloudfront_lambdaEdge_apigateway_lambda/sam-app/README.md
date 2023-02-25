@@ -1,14 +1,11 @@
 # sam-app
+用ApiGateway + Lambda实现了一个http server。该工程通过sam init初始化一个hello world，并在此基础上修改而成
 
 ## Deploy
-
 ```
 # build by sam
 sam build
 
 # deploy by sam  
-```Stack Name:需要改成没有部署过的名字. EdgeFunctionRole为自定义Role Name，需要使用CAPABILITY_NAMED_IAM
-sam deploy --guided --capabilities CAPABILITY_NAMED_IAM
-
-# Add Lambda@Edge of CloudFront as lambda trigger on AWS Console.
+sam deploy --guided
 ```
