@@ -1,0 +1,72 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Test lambda@edge
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  TestFunction4ViewerRequest:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: viewer_request/
+      Handler: viewer_request.handler
+      Runtime: nodejs14.x
+      Role: !GetAtt EdgeFunctionRole.Arn
+  TestFunction4OriginRequest:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: origin_request/
+      Handler: origin_request.handler
+      Runtime: nodejs14.x
+      Role: !GetAtt EdgeFunctionRole.Arn
+  TestFunction4ViewerResponse:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: viewer_response/
+      Handler: viewer_response.handler
+      Runtime: nodejs14.x
+      Role: !GetAtt EdgeFunctionRole.Arn
+  TestFunction4OriginResponse:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: origin_response/
+      Handler: origin_response.handler
+      Runtime: nodejs14.x
+      Role: !GetAtt EdgeFunctionRole.Arn
+
+  EdgeFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${AWS::StackName}-edgeFunction
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          Effect: Allow
+          Principal:
+            Service:
+              - lambda.amazonaws.com
+              - edgelambda.amazonaws.com
+          Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+
+Outputs:
+  TestFunction4ViewerRequest:
+    Description: "Viewer Request Lambda Function ARN"
+    Value: !GetAtt TestFunction4ViewerRequest.Arn
+  TestFunction4OriginRequest:
+    Description: "Origin Request Lambda Function ARN"
+    Value: !GetAtt TestFunction4OriginRequest.Arn
+  TestFunction4ViewerResponse:
+    Description: "Viewer Response Lambda Function ARN"
+    Value: !GetAtt TestFunction4ViewerResponse.Arn
+  TestFunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt EdgeFunctionRole.Arn
+  TestFunction4OriginResponse:
+    Description: "Origin Response Lambda Function ARN"
+    Value: !GetAtt TestFunction4OriginResponse.Arn

@@ -1,0 +1,11 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "sam-lambda-edge"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-dt9k0lyg4ea1"
+s3_prefix = "sam-lambda-edge"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_NAMED_IAM"
+image_repositories = []
